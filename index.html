@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La vaca del regalo</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#eef4ef; --hoja:#ffffff; --tinta:#14261f; --suave:#5d7068;
+  --envoltorio:#0f5c4f; --envoltorio-2:#0b4a40; --cinta:#e0483e; --oro:#e3b23c;
+  --linea:#d5e0d9; --ok-fondo:#dff1e6; --ok-tinta:#0f5c4f; --pend-fondo:#fdeceb; --pend-tinta:#b3342b;
+  --sobre-envoltorio:#f3faf6;
+  --display:"Bricolage Grotesque","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --texto:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --papel:#0e1a16; --hoja:#16261f; --tinta:#e9f2ed; --suave:#9db3a9;
+    --envoltorio:#12695a; --envoltorio-2:#0d5246; --cinta:#f0655b; --oro:#ecc25a;
+    --linea:#2a3f36; --ok-fondo:#1c3d31; --ok-tinta:#9be0c0; --pend-fondo:#40211f; --pend-tinta:#ffa59e;
+    --sobre-envoltorio:#f3faf6;
+  }
+}
+*{box-sizing:border-box}
+html{background:var(--papel)}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--texto);font-size:16px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--oro);outline-offset:2px}
+.contenedor{max-width:860px;margin:0 auto;padding:0 18px}
+
+/* Cabecera: el papel de regalo */
+.envoltorio{
+  background:
+    repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,255,255,.045) 22px 44px),
+    var(--envoltorio);
+  color:var(--sobre-envoltorio);
+  padding:34px 0 30px;
+}
+.titulo{
+  display:block;width:100%;background:transparent;border:0;border-bottom:2px dashed transparent;
+  color:inherit;font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,7vw,3.5rem);line-height:1.05;letter-spacing:-.02em;padding:0 0 4px;
+}
+.titulo:hover,.titulo:focus{border-bottom-color:rgba(255,255,255,.45);outline:none}
+.titulo::placeholder{color:rgba(243,250,246,.55)}
+.ajustes{display:flex;flex-wrap:wrap;gap:14px 26px;margin-top:16px}
+.ajustes label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;opacity:.95}
+.ajustes input{
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:8px;
+  padding:8px 10px;width:170px;color:inherit;font-weight:600;font-size:1rem;
+}
+.ajustes input::placeholder{color:rgba(243,250,246,.5);font-weight:400}
+
+/* La cinta: progreso */
+.cinta-zona{margin-top:30px}
+.cinta{position:relative;height:26px;background:var(--envoltorio-2);border-radius:4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.cinta-llena{
+  position:absolute;inset:0 auto 0 0;width:0;border-radius:4px;
+  background:linear-gradient(180deg, rgba(255,255,255,.22), transparent 45%), var(--cinta);
+  transition:width .5s cubic-bezier(.2,.8,.2,1);
+}
+.lazo{
+  position:absolute;top:50%;left:0;width:58px;height:44px;transform:translate(-50%,-50%);
+  transition:left .5s cubic-bezier(.2,.8,.2,1);pointer-events:none;
+}
+.cinta-pie{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:.95rem}
+.cinta-pie strong{font-family:var(--display);font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
+.cinta-pie .der{text-align:right}
+@media (prefers-reduced-motion: reduce){.cinta-llena,.lazo{transition:none}}
+
+/* Cifras */
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--linea)}
+.cifras div{padding:18px 4px}
+.cifras div+div{border-left:1px solid var(--linea);padding-left:18px}
+.cifras b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(1.2rem,4.5vw,1.75rem);letter-spacing:-.01em}
+.cifras span{color:var(--suave);font-size:.88rem}
+
+/* Agregar */
+.agregar{display:grid;grid-template-columns:1fr 170px auto;gap:10px;margin:26px 0 8px}
+.campo{background:var(--hoja);border:1px solid var(--linea);border-radius:10px;padding:11px 12px;width:100%;min-width:0}
+.btn{border:0;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;background:var(--envoltorio);color:var(--sobre-envoltorio)}
+.btn:hover{background:var(--envoltorio-2)}
+.btn-linea{background:transparent;color:var(--tinta);border:1px solid var(--linea);font-weight:600}
+.btn-linea:hover{background:var(--hoja)}
+.enlace{background:none;border:0;padding:4px 0;color:var(--envoltorio);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+@media (prefers-color-scheme: dark){.enlace{color:var(--ok-tinta)}}
+.varios{margin:6px 0 18px}
+.varios textarea{display:block;width:100%;min-height:120px;margin:8px 0;resize:vertical}
+
+/* Barra de lista */
+.barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:18px 0 10px}
+.filtros{display:flex;gap:6px;flex-wrap:wrap}
+.filtro{border:1px solid var(--linea);background:transparent;border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:600;font-size:.9rem}
+.filtro[aria-pressed="true"]{background:var(--tinta);color:var(--papel);border-color:var(--tinta)}
+.buscar{max-width:220px;padding:8px 12px}
+.cuenta{font-weight:650}
+
+/* Lista */
+.lista{list-style:none;margin:0;padding:0;background:var(--hoja);border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.fila{display:grid;grid-template-columns:minmax(0,1fr) 150px 36px;gap:8px;align-items:center;padding:10px 12px;border-top:1px solid var(--linea)}
+.fila:first-child{border-top:0}
+.fila.pagado{background:linear-gradient(90deg,var(--ok-fondo),transparent 60%)}
+.fila input,.fila select{background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 8px;width:100%;min-width:0}
+.fila input:hover,.fila select:hover,.fila input:focus,.fila select:focus{border-color:var(--linea);background:var(--papel)}
+.nombre{font-weight:650}
+.nota{font-size:.85rem;color:var(--suave);padding-top:2px !important;padding-bottom:4px !important}
+.monto{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.estado{border:0;border-radius:999px;padding:8px 10px;font-weight:700;cursor:pointer;font-size:.9rem;background:var(--pend-fondo);color:var(--pend-tinta)}
+.pagado .estado{background:var(--ok-fondo);color:var(--ok-tinta)}
+.fecha{display:block;font-size:.72rem;font-weight:500;opacity:.8}
+.quitar{border:0;background:transparent;color:var(--suave);cursor:pointer;border-radius:8px;height:34px;font-size:1.1rem}
+.quitar:hover{background:var(--pend-fondo);color:var(--pend-tinta)}
+.quitar.seguro{width:auto;font-size:.75rem;font-weight:700;background:var(--pend-fondo);color:var(--pend-tinta);padding:0 6px}
+.vacio{padding:34px 18px;text-align:center;color:var(--suave)}
+@media (max-width:640px){
+  .agregar{grid-template-columns:1fr 1fr}
+  .agregar .campo:first-child{grid-column:1/-1}
+  .fila{grid-template-columns:minmax(0,1fr) 110px 36px}
+}
+
+/* Pie */
+.pie{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 10px}
+.aviso{font-size:.85rem;color:var(--suave);margin:8px 0 40px;max-width:68ch}
+.aviso.alerta{color:var(--pend-tinta)}
+.resumen-caja{margin:12px 0}
+.resumen-caja textarea{width:100%;min-height:170px}
+.tostada{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--tinta);color:var(--papel);padding:10px 16px;border-radius:999px;font-weight:600;font-size:.9rem;opacity:0;pointer-events:none;transition:opacity .2s}
+.tostada.ver{opacity:1}
+[hidden]{display:none !important}
+</style>
+</head>
+<body>
+
+<header class="envoltorio">
+  <div class="contenedor">
+    <input id="titulo" class="titulo" aria-label="Nombre del regalo" placeholder="Regalo para…" maxlength="60">
+    <div class="ajustes">
+      <label>Meta del regalo (opcional)
+        <input id="meta" inputmode="numeric" placeholder="$ 0" autocomplete="off">
+      </label>
+    </div>
+
+    <div class="cinta-zona">
+      <div class="cinta" role="progressbar" aria-label="Avance hacia la meta" aria-valuemin="0" aria-valuemax="100" id="barra">
+        <div class="cinta-llena" id="llena"></div>
+        <svg class="lazo" id="lazo" viewBox="0 0 58 44" aria-hidden="true">
+          <path d="M29 22 C18 2 2 4 5 18 C7 30 20 28 29 22Z" fill="#e3b23c"/>
+          <path d="M29 22 C40 2 56 4 53 18 C51 30 38 28 29 22Z" fill="#e3b23c"/>
+          <path d="M29 22 L20 42 L26 38 L29 43 Z M29 22 L38 42 L32 38 L29 43 Z" fill="#c9972a"/>
+          <circle cx="29" cy="22" r="6" fill="#f2cf6e"/>
+        </svg>
+      </div>
+      <div class="cinta-pie">
+        <div><strong id="recibido">$0</strong><br><span id="recibidoTxt">recibido</span></div>
+        <div class="der"><strong id="falta">$0</strong><br><span id="faltaTxt">falta para la meta</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="contenedor">
+
+  <div class="agregar">
+    <input id="nNombre" class="campo" placeholder="Nombre de quien aporta" autocomplete="off" aria-label="Nombre">
+    <input id="nMonto" class="campo" inputmode="numeric" placeholder="Plata aportada" autocomplete="off" aria-label="Plata aportada">
+    <button class="btn" id="btnAgregar">Agregar aporte</button>
+  </div>
+  <div class="barra">
+    <div class="cuenta" id="cuenta"></div>
+    <input id="buscar" class="campo buscar" type="search" placeholder="Buscar nombre" aria-label="Buscar nombre">
+  </div>
+
+  <ul class="lista" id="lista"></ul>
+
+  <div class="pie">
+    <button class="btn" id="btnResumen">Copiar resumen para WhatsApp</button>
+    <button class="btn btn-linea" id="btnExportar">Descargar respaldo</button>
+    <button class="btn btn-linea" id="btnImportar">Cargar respaldo</button>
+    <input type="file" id="archivo" accept="application/json,.json" hidden>
+  </div>
+  <div class="resumen-caja" id="resumenCaja" hidden>
+    <textarea id="resumenTxt" class="campo" readonly aria-label="Resumen para copiar"></textarea>
+  </div>
+  <p class="aviso" id="aviso"></p>
+</main>
+
+<div class="tostada" id="tostada" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var CLAVE = 'vaca-regalo-v2';
+  var guardaEnNavegador = true;
+  var estado = { titulo:'', meta:0, personas:[] };
+  var busqueda = '';
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- Guardado ---------- */
+  function cargar(){
+    try{
+      var crudo = window.localStorage.getItem(CLAVE);
+      if(crudo){ aplicar(JSON.parse(crudo)); }
+    }catch(e){ guardaEnNavegador = false; }
+  }
+  function guardar(){
+    try{ window.localStorage.setItem(CLAVE, JSON.stringify(estado)); }
+    catch(e){ guardaEnNavegador = false; pintarAviso(); }
+  }
+  function aplicar(d){
+    if(!d || typeof d !== 'object') return;
+    estado.titulo = String(d.titulo || '').slice(0,60);
+    estado.meta = num(d.meta);
+    estado.personas = Array.isArray(d.personas) ? d.personas.map(function(p){
+      return { id: String(p.id || nuevoId()), nombre: String(p.nombre || '').slice(0,80), monto: num(p.monto) };
+    }) : [];
+  }
+
+  /* ---------- Utilidades ---------- */
+  function num(v){ var n = parseInt(String(v == null ? '' : v).replace(/[^\d]/g,''), 10); return isFinite(n) ? n : 0; }
+  function plata(n){ return '$' + (n || 0).toLocaleString('es-CL'); }
+  function nuevoId(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+  function hoy(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function sinTildes(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  var tTostada;
+  function avisar(t){ var el = $('tostada'); el.textContent = t; el.classList.add('ver'); clearTimeout(tTostada); tTostada = setTimeout(function(){ el.classList.remove('ver'); }, 2200); }
+  function total(){ return estado.personas.reduce(function(s, p){ return s + p.monto; }, 0); }
+
+  /* ---------- Pintar ---------- */
+  function pintarResumen(){
+    var rec = total(), meta = estado.meta, n = estado.personas.length;
+    var pct = meta > 0 ? Math.min(100, Math.round(rec / meta * 100)) : (rec > 0 ? 100 : 0);
+    $('llena').style.width = pct + '%';
+    $('lazo').style.left = Math.max(4, Math.min(96, pct)) + '%';
+    $('barra').setAttribute('aria-valuenow', pct);
+    $('recibido').textContent = plata(rec);
+    $('recibidoTxt').textContent = meta > 0 ? 'juntado, ' + pct + '% de la meta' : 'juntado hasta ahora';
+    if(meta > 0){
+      var falta = meta - rec;
+      $('falta').textContent = falta > 0 ? plata(falta) : '¡Listo!';
+      $('faltaTxt').textContent = falta > 0 ? 'falta para la meta' : (falta < 0 ? 'sobran ' + plata(-falta) : 'meta cumplida');
+    } else {
+      $('falta').textContent = String(n);
+      $('faltaTxt').textContent = n === 1 ? 'persona aportó' : 'personas aportaron';
+    }
+    $('cuenta').textContent = n === 1 ? '1 aporte' : n + ' aportes';
+  }
+
+  function pintarLista(){
+    var ul = $('lista'), q = sinTildes(busqueda.trim());
+    var vis = estado.personas.filter(function(p){ return !q || sinTildes(p.nombre).indexOf(q) !== -1; });
+    if(!estado.personas.length){
+      ul.innerHTML = '<li class="vacio">Todavía no hay aportes. Anota el primero arriba.</li>';
+      return;
+    }
+    if(!vis.length){
+      ul.innerHTML = '<li class="vacio">Nadie con ese nombre.</li>';
+      return;
+    }
+    ul.innerHTML = vis.map(function(p){
+      return '<li class="fila" data-id="' + esc(p.id) + '">' +
+        '<input class="nombre" data-c="nombre" value="' + esc(p.nombre) + '" aria-label="Nombre" maxlength="80">' +
+        '<input class="monto" data-c="monto" inputmode="numeric" value="' + plata(p.monto) + '" aria-label="Plata aportada por ' + esc(p.nombre) + '">' +
+        '<button class="quitar" data-a="quitar" aria-label="Quitar a ' + esc(p.nombre) + '" title="Quitar">×</button>' +
+      '</li>';
+    }).join('');
+  }
+
+  function pintarAviso(){
+    var el = $('aviso');
+    if(guardaEnNavegador){
+      el.className = 'aviso';
+      el.textContent = 'Los datos se guardan solo en este navegador, no en GitHub. Para pasárselos a otra persona o a otro equipo, descarga el respaldo y cárgalo allá.';
+    } else {
+      el.className = 'aviso alerta';
+      el.textContent = 'En esta vista previa no se puede guardar: al cerrar se pierde lo que anotes. Publicada en GitHub Pages sí queda guardado en el navegador. Mientras tanto, usa “Descargar respaldo”.';
+    }
+  }
+
+  function pintarTodo(){
+    $('titulo').value = estado.titulo;
+    $('meta').value = estado.meta ? plata(estado.meta) : '';
+    document.title = (estado.titulo || 'La vaca del regalo');
+    pintarResumen(); pintarLista(); pintarAviso();
+  }
+
+  /* ---------- Acciones ---------- */
+  $('btnAgregar').addEventListener('click', function(){
+    var n = $('nNombre'), m = $('nMonto'), nombre = n.value.trim(), monto = num(m.value);
+    if(!nombre){ n.focus(); avisar('Escribe un nombre'); return; }
+    if(!monto){ m.focus(); avisar('Escribe cuánto aportó'); return; }
+    estado.personas.push({ id: nuevoId(), nombre: nombre.slice(0,80), monto: monto });
+    n.value = ''; m.value = ''; guardar(); pintarResumen(); pintarLista(); n.focus();
+  });
+  ['nNombre','nMonto'].forEach(function(id){
+    $(id).addEventListener('keydown', function(e){ if(e.key === 'Enter'){ $('btnAgregar').click(); } });
+  });
+
+  $('titulo').addEventListener('input', function(){ estado.titulo = this.value; document.title = this.value || 'La vaca del regalo'; guardar(); });
+  $('meta').addEventListener('input', function(){ estado.meta = num(this.value); guardar(); pintarResumen(); });
+  $('meta').addEventListener('blur', function(){ var v = num(this.value); this.value = v ? plata(v) : ''; });
+
+  function buscarPersona(el){
+    var li = el.closest('.fila'); if(!li) return null;
+    var id = li.getAttribute('data-id');
+    for(var i=0;i<estado.personas.length;i++){ if(estado.personas[i].id === id) return estado.personas[i]; }
+    return null;
+  }
+
+  $('lista').addEventListener('input', function(e){
+    var c = e.target.getAttribute('data-c'), p = buscarPersona(e.target); if(!c || !p) return;
+    if(c === 'monto') p.monto = num(e.target.value); else p.nombre = e.target.value;
+    guardar(); pintarResumen();
+  });
+  $('lista').addEventListener('change', function(e){
+    if(e.target.getAttribute('data-c') === 'monto'){ e.target.value = plata(num(e.target.value)); }
+  });
+  $('lista').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    var p = buscarPersona(b); if(!p) return;
+    if(!b.classList.contains('seguro')){
+      b.classList.add('seguro'); b.textContent = '¿Quitar?';
+      setTimeout(function(){ if(b.isConnected){ b.classList.remove('seguro'); b.textContent = '×'; } }, 3000);
+      return;
+    }
+    estado.personas = estado.personas.filter(function(x){ return x !== p; });
+    guardar(); pintarResumen(); pintarLista();
+  });
+
+  $('buscar').addEventListener('input', function(){ busqueda = this.value; pintarLista(); });
+
+  /* ---------- Resumen para WhatsApp ---------- */
+  function textoResumen(){
+    var l = [], n = estado.personas.length;
+    l.push('🎁 *' + (estado.titulo || 'Regalo') + '*');
+    l.push('Llevamos ' + plata(total()) + (estado.meta ? ' de ' + plata(estado.meta) : '') + ' (' + n + (n === 1 ? ' aporte)' : ' aportes)'));
+    if(n){ l.push(''); estado.personas.forEach(function(p){ l.push('• ' + p.nombre + ': ' + plata(p.monto)); }); }
+    return l.join('\n');
+  }
+  $('btnResumen').addEventListener('click', function(){
+    var txt = textoResumen(), caja = $('resumenCaja'), area = $('resumenTxt');
+    function mostrar(){ caja.hidden = false; area.value = txt; area.focus(); area.select(); avisar('Selecciona y copia el texto'); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ caja.hidden = true; avisar('Resumen copiado'); }, mostrar);
+    } else { mostrar(); }
+  });
+
+  /* ---------- Respaldo ---------- */
+  $('btnExportar').addEventListener('click', function(){
+    try{
+      var blob = new Blob([JSON.stringify(estado, null, 2)], {type:'application/json'});
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'regalo-respaldo-' + hoy() + '.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+      avisar('Respaldo descargado');
+    }catch(e){ avisar('No se pudo descargar aquí'); }
+  });
+  $('btnImportar').addEventListener('click', function(){ $('archivo').click(); });
+  $('archivo').addEventListener('change', function(){
+    var f = this.files && this.files[0]; if(!f) return;
+    var lector = new FileReader();
+    lector.onload = function(){
+      try{ aplicar(JSON.parse(lector.result)); guardar(); pintarTodo(); avisar('Respaldo cargado'); }
+      catch(e){ avisar('Ese archivo no es un respaldo válido'); }
+    };
+    lector.readAsText(f); this.value = '';
+  });
+
+  cargar();
+  pintarTodo();
+})();
+</script>
+</body>
+</html>
